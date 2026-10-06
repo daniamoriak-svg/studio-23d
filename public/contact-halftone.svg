@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" fill="none">
+  <defs>
+    <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2.25" fill="#111"/>
+      <circle cx="9" cy="9" r="2.25" fill="#111"/>
+    </pattern>
+    <linearGradient id="fade" x1="40" y1="50" x2="860" y2="1050" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity=".08"/>
+      <stop offset=".48" stop-color="white" stop-opacity=".96"/>
+      <stop offset="1" stop-color="white" stop-opacity=".24"/>
+    </linearGradient>
+    <mask id="soft">
+      <path fill="url(#fade)" d="M170 0h730v1100H170c75-94 141-174 106-270-39-108-184-137-211-258-25-113 86-178 139-257C251 224 187 114 170 0Z"/>
+    </mask>
+  </defs>
+  <path fill="#fafaf8" d="M0 0h900v1100H0z"/>
+  <path fill="url(#dots)" mask="url(#soft)" d="M110 0h790v1100H110z"/>
+  <path fill="#fafaf8" d="M548 0c-43 104-5 184 88 269 73 67 127 120 106 192-22 77-118 107-153 181-45 93 19 194 133 291 91 77 117 115 83 167H900V0H548Z"/>
+  <path stroke="#111" stroke-opacity=".12" stroke-width="2" d="M574 0c-32 105 24 188 116 273 76 70 119 118 93 190-25 70-113 104-149 176-43 86 15 181 120 277 80 73 115 117 95 184"/>
+</svg>

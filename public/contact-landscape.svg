@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="800" y1="0" x2="800" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d6d7d6"/>
+      <stop offset=".58" stop-color="#9a9c9c"/>
+      <stop offset="1" stop-color="#666969"/>
+    </linearGradient>
+    <linearGradient id="mist" x1="0" y1="540" x2="1600" y2="850" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity=".55"/>
+      <stop offset=".55" stop-color="#e4e5e4" stop-opacity=".18"/>
+      <stop offset="1" stop-color="white" stop-opacity=".42"/>
+    </linearGradient>
+    <filter id="clouds" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".009 .022" numOctaves="3" seed="17"/>
+      <feColorMatrix values=".38 0 0 0 .28 .38 0 0 0 .29 .38 0 0 0 .30 0 0 0 .28 0"/>
+      <feGaussianBlur stdDeviation="15"/>
+    </filter>
+    <g id="pine" fill="#252829">
+      <path d="M0 0 25 53H14l24 48H-1l17-34H5l20-39H13L25 0Z"/>
+      <path d="M23 99h5v25h-5z"/>
+    </g>
+    <pattern id="forest" width="94" height="116" patternUnits="userSpaceOnUse">
+      <use href="#pine" x="4" y="10" transform="scale(.9 1.05)"/>
+      <use href="#pine" x="47" y="-9" transform="scale(.66 .77)" opacity=".84"/>
+      <use href="#pine" x="70" y="32" transform="scale(.48 .56)" opacity=".68"/>
+    </pattern>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1600v1000H0z"/>
+  <path fill="#f2f3f2" filter="url(#clouds)" opacity=".85" d="M0 0h1600v820H0z"/>
+  <path fill="url(#mist)" d="M0 470c245-83 400 91 622 25 246-73 420-109 594-21 156 79 261 47 384-7v533H0V470Z"/>
+  <path fill="#45494a" d="M0 621c194-82 326-109 493-62 171 49 324 177 501 169 170-8 350-182 606-181v453H0V621Z"/>
+  <path fill="url(#forest)" d="M0 598c210-90 342-91 498-33 166 61 331 190 496 176 207-18 355-198 606-200v459H0V598Z"/>
+  <path fill="#292d2e" opacity=".9" d="M0 780c173-72 314-47 472 32 186 92 324 124 465 103 213-32 410-178 663-171v256H0V780Z"/>
+  <path fill="url(#forest)" opacity=".92" d="M0 759c177-66 326-37 474 41 189 99 324 131 469 105 217-39 405-178 657-171v266H0V759Z"/>
+  <path fill="url(#mist)" opacity=".56" d="M0 528c190 62 305 22 454 58 176 43 303 132 488 118 184-13 392-131 658-126v141c-270-20-467 80-666 95-214 17-342-92-515-116-172-24-265 27-419-11V528Z"/>
+</svg>
