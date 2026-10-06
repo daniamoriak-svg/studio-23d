@@ -13,18 +13,90 @@ import Link from "next/link";
 import { useProjectTransition } from "./project-transition";
 
 const projects = [
-  { name: "FORMA", category: "Айдентика", color: "#d8cec0" },
-  { name: "NORD", category: "Объекты", color: "#455747" },
-  { name: "PULSE", category: "Цифровые проекты", color: "#bcc8ee" },
-  { name: "TYPE / 01", category: "Айдентика", color: "#e59872" },
-  { name: "ORBIT", category: "Цифровые проекты", color: "#292d48" },
-  { name: "МТС УЖЕ 5G", category: "ИИ-ролики", color: "#e32636" },
-  { name: "MONO", category: "Айдентика", color: "#d5d5ce" },
-  { name: "COAST", category: "Моушн-дизайн", color: "#8ea9b1" },
-  { name: "AMBER", category: "3D-графика", color: "#a85f34" },
-  { name: "ARCHIVE", category: "Моушн-дизайн", color: "#3d394c" },
-  { name: "VERT", category: "Цифровые проекты", color: "#a4b69b" },
-  { name: "SILOS", category: "Айдентика", color: "#c2bcba" },
+  {
+    name: "FORMA",
+    category: "Айдентика",
+    description: "Айдентика бренда.",
+    year: "—",
+    color: "#d8cec0",
+  },
+  {
+    name: "NORD",
+    category: "Объекты",
+    description: "Дизайн предметов и объектов.",
+    year: "—",
+    color: "#455747",
+  },
+  {
+    name: "PULSE",
+    category: "Цифровые проекты",
+    description: "Цифровой продукт.",
+    year: "—",
+    color: "#bcc8ee",
+  },
+  {
+    name: "TYPE / 01",
+    category: "Айдентика",
+    description: "Типографика и шрифтовая система.",
+    year: "—",
+    color: "#e59872",
+  },
+  {
+    name: "ORBIT",
+    category: "Цифровые проекты",
+    description: "Цифровой опыт и новые сценарии.",
+    year: "—",
+    color: "#292d48",
+  },
+  {
+    name: "МТС УЖЕ 5G",
+    category: "ИИ-ролики",
+    description: "Истории о технологиях в жизни.",
+    year: "—",
+    color: "#e32636",
+  },
+  {
+    name: "MONO",
+    category: "Айдентика",
+    description: "Айдентика и графическая система.",
+    year: "—",
+    color: "#d5d5ce",
+  },
+  {
+    name: "COAST",
+    category: "Моушн-дизайн",
+    description: "Моушн-графика и визуальный сторителлинг.",
+    year: "—",
+    color: "#8ea9b1",
+  },
+  {
+    name: "AMBER",
+    category: "3D-графика",
+    description: "3D-графика и исследование формы.",
+    year: "—",
+    color: "#a85f34",
+  },
+  {
+    name: "ARCHIVE",
+    category: "Моушн-дизайн",
+    description: "Моушн и работа с архивными образами.",
+    year: "—",
+    color: "#3d394c",
+  },
+  {
+    name: "VERT",
+    category: "Цифровые проекты",
+    description: "Цифровая визуальная система.",
+    year: "—",
+    color: "#a4b69b",
+  },
+  {
+    name: "SILOS",
+    category: "Айдентика",
+    description: "Айдентика и графический язык.",
+    year: "—",
+    color: "#c2bcba",
+  },
 ];
 
 const categories = [
@@ -413,6 +485,21 @@ export default function Home() {
           ))}
         </nav>
 
+        <div className="project-caption" aria-live="polite">
+          <div className="project-caption-heading">
+            <h2>
+              {visibleProjects[activeIndex].name === "МТС УЖЕ 5G"
+                ? "МТС"
+                : visibleProjects[activeIndex].name}
+            </h2>
+            <span className="project-caption-year">
+              <span>ГОД</span>
+              {visibleProjects[activeIndex].year}
+            </span>
+          </div>
+          <p>{visibleProjects[activeIndex].description}</p>
+        </div>
+
         <div
           ref={sceneRef}
           className="gallery"
@@ -516,25 +603,6 @@ export default function Home() {
         </footer>
       </section>
 
-      <footer className="contact-footer" aria-label="Контакты студии">
-        <a className="contact-footer-email" href="mailto:hello@studio-23d.com">
-          hello@studio-23d.com
-        </a>
-        <div className="contact-footer-details">
-          <div>
-            <span className="contact-footer-label">КОНТАКТ</span>
-            <span>Sergey Pleshkov</span>
-          </div>
-          <div>
-            <span className="contact-footer-label">АДРЕС</span>
-            <span>Дербеневская наб., 7, стр. 13</span>
-          </div>
-        </div>
-        <div className="contact-footer-bottom">
-          <span>2И3Д</span>
-          <Link href="/contacts">Контакты ↗</Link>
-        </div>
-      </footer>
     </main>
   );
 }
