@@ -5,6 +5,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type PointerEvent as ReactPointerEvent,
 } from "react";
 import gsap from "gsap";
 import Image from "next/image";
@@ -46,6 +47,14 @@ export default function Home() {
   const showreelRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLButtonElement[]>([]);
   const wheelTime = useRef(0);
+  const dragRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startIndex: number;
+    stepX: number;
+    moved: boolean;
+  } | null>(null);
+  const suppressClickRef = useRef(false);
   const layoutReady = useRef(false);
 
   const visibleProjects = projects.filter(
@@ -90,7 +99,7 @@ export default function Home() {
       .filter((face): face is Element => face !== null);
 
     const arrange = (instant = false) => {
-      const mobile = window.innerWidth < 760;
+      const mobile = window.innerWidth <= 760;
       const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
@@ -182,21 +191,23 @@ export default function Home() {
     };
   }, [activeIndex, category]);
 
-  // Переключение колесом без прокрутки страницы.
+  // Переключаем карточки только горизонтальным жестом тачпада над карточкой.
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene) return;
 
     const onWheel = (event: WheelEvent) => {
-      if (event.ctrlKey) return;
+      if (
+        event.ctrlKey ||
+        Math.abs(event.deltaX) <= Math.abs(event.deltaY) ||
+        Math.abs(event.deltaX) < 8 ||
+        !(event.target instanceof Element) ||
+        !event.target.closest(".project-card")
+      ) {
+        return;
+      }
 
-      const delta =
-        Math.abs(event.deltaY) > Math.abs(event.deltaX)
-          ? event.deltaY
-          : event.deltaX;
-      const direction = Math.sign(delta);
-      if (!direction || Math.abs(delta) < 8) return;
-
+      const direction = Math.sign(event.deltaX);
       const atEdge =
         (direction < 0 && activeIndex === 0) ||
         (direction > 0 && activeIndex === visibleProjects.length - 1);
@@ -207,15 +218,14 @@ export default function Home() {
 
       const now = Date.now();
 
-      // Не переключаем сразу несколько проектов от одного движения колеса.
-      if (now - wheelTime.current < 950) return;
+      // Одна серия событий от жеста тачпада переключает только одну карточку.
+      if (now - wheelTime.current < 500) return;
 
       wheelTime.current = now;
-
       setSelected((current) =>
         Math.max(
           0,
-          Math.min(visibleProjects.length - 1, current + Math.sign(delta))
+          Math.min(visibleProjects.length - 1, current + direction)
         )
       );
     };
@@ -226,6 +236,51 @@ export default function Home() {
       scene.removeEventListener("wheel", onWheel);
     };
   }, [activeIndex, visibleProjects.length]);
+
+  function startCardDrag(
+    event: ReactPointerEvent<HTMLButtonElement>
+  ) {
+    if (!event.isPrimary || event.button !== 0) return;
+
+    const mobile = window.innerWidth <= 760;
+    const cardWidth = event.currentTarget.offsetWidth;
+
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startIndex: activeIndex,
+      stepX: cardWidth * (mobile ? 0.92 : 1.25),
+      moved: false,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function moveCardDrag(event: ReactPointerEvent<HTMLButtonElement>) {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - drag.startX;
+    if (Math.abs(deltaX) < 8) return;
+
+    drag.moved = true;
+    const offset = Math.round(-deltaX / drag.stepX);
+    setSelected(
+      Math.max(0, Math.min(visibleProjects.length - 1, drag.startIndex + offset))
+    );
+  }
+
+  function endCardDrag(event: ReactPointerEvent<HTMLButtonElement>) {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    dragRef.current = null;
+    if (drag.moved) {
+      suppressClickRef.current = true;
+      window.setTimeout(() => {
+        suppressClickRef.current = false;
+      }, 0);
+    }
+  }
 
   return (
     <main className="home-page">
@@ -337,7 +392,15 @@ export default function Home() {
                     : `Выбрать работу ${project.name}`
                 }
                 aria-pressed={index === activeIndex}
+                onPointerDown={startCardDrag}
+                onPointerMove={moveCardDrag}
+                onPointerUp={endCardDrag}
+                onPointerCancel={() => {
+                  dragRef.current = null;
+                }}
                 onClick={() => {
+                  if (suppressClickRef.current) return;
+
                   if (project.name === "МТС УЖЕ 5G") {
                     navigateWithTransition("/projects/mts");
                     return;
@@ -376,7 +439,9 @@ export default function Home() {
             <span> / {String(visibleProjects.length).padStart(2, "0")}</span>
           </span>
 
-          <span className="browse-hint">Колесо мыши · Клик по карточке</span>
+          <span className="browse-hint">
+            Зажмите и потяните · Горизонтальный скролл тачпада
+          </span>
 
           <div className="gallery-controls">
             <button

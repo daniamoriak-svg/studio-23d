@@ -329,10 +329,16 @@ a:focus-visible {
   border: 0;
   border-radius: 7px;
   background: transparent;
-  cursor: pointer;
+  cursor: grab;
   transform-origin: center;
   will-change: transform;
   isolation: isolate;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.project-card:active {
+  cursor: grabbing;
 }
 
 .project-card::before {
@@ -531,7 +537,7 @@ a:focus-visible {
   }
 }
 
-@media (max-width: 759px) {
+@media (max-width: 760px) {
   :root {
     --card-width: min(78vw, 360px);
   }
@@ -544,7 +550,11 @@ a:focus-visible {
   }
 
   .site-header {
-    padding: 16px 18px;
+    padding:
+      max(16px, env(safe-area-inset-top))
+      max(18px, env(safe-area-inset-right))
+      16px
+      max(18px, env(safe-area-inset-left));
     align-items: flex-start;
     flex-direction: row;
     gap: 10px;
@@ -557,8 +567,15 @@ a:focus-visible {
 
   .main-navigation {
     gap: 14px;
-    padding-top: 6px;
+    align-items: center;
+    padding-top: 0;
     font-size: 12px;
+  }
+
+  .main-navigation a {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
   }
 
   .site-header.showreel-visible .main-navigation a {
@@ -594,6 +611,7 @@ a:focus-visible {
     bottom: auto;
     left: auto;
     align-self: center;
+    min-height: 44px;
     padding: 12px 16px;
     font-size: 11px;
     transform: none;
@@ -606,7 +624,7 @@ a:focus-visible {
   }
 
   .filter {
-    min-height: 36px;
+    min-height: 44px;
     padding: 7px 0 5px;
     font-size: 12px;
     touch-action: manipulation;
@@ -618,12 +636,12 @@ a:focus-visible {
 
   .portfolio {
     height: min(590px, 69svh);
-    min-height: 500px;
+    min-height: 420px;
   }
 
   .cards-origin {
     left: 50%;
-    top: 56%;
+    top: 53%;
   }
 
   .cover-title {
@@ -637,9 +655,9 @@ a:focus-visible {
   }
 
   .site-footer {
-    left: 18px;
-    right: 18px;
-    bottom: 16px;
+    left: max(18px, env(safe-area-inset-left));
+    right: max(18px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
     gap: 12px;
   }
 
@@ -664,7 +682,11 @@ a:focus-visible {
     min-height: 0;
     grid-template-columns: 1fr;
     gap: 12px;
-    padding: 18px 20px 14px;
+    padding:
+      18px
+      max(20px, env(safe-area-inset-right))
+      max(14px, env(safe-area-inset-bottom))
+      max(20px, env(safe-area-inset-left));
   }
 
   .contact-footer-email {
