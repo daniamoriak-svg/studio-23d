@@ -44,6 +44,8 @@ export default function Home() {
   const [isShowreelVisible, setIsShowreelVisible] = useState(true);
 
   const sceneRef = useRef<HTMLDivElement>(null);
+  const projectTabsRef = useRef<HTMLElement>(null);
+  const activeProjectTabRef = useRef<HTMLButtonElement>(null);
   const showreelRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLButtonElement[]>([]);
   const wheelTime = useRef(0);
@@ -63,6 +65,31 @@ export default function Home() {
 
   const activeIndex = Math.min(selected, visibleProjects.length - 1);
   const previousActiveIndex = useRef(activeIndex);
+
+  useEffect(() => {
+    const tabs = projectTabsRef.current;
+    const activeTab = activeProjectTabRef.current;
+
+    if (
+      !tabs ||
+      !activeTab ||
+      !window.matchMedia("(max-width: 760px)").matches
+    ) {
+      return;
+    }
+
+    const tabsBounds = tabs.getBoundingClientRect();
+    const activeTabBounds = activeTab.getBoundingClientRect();
+
+    tabs.scrollTo({
+      left:
+        tabs.scrollLeft +
+        activeTabBounds.left -
+        tabsBounds.left -
+        (tabs.clientWidth - activeTab.clientWidth) / 2,
+      behavior: "smooth",
+    });
+  }, [activeIndex, category]);
 
   useEffect(() => {
     const showreel = showreelRef.current;
@@ -345,6 +372,11 @@ export default function Home() {
       </section>
 
       <section className="portfolio" id="work" aria-label="Избранные работы">
+        <div className="mobile-portfolio-heading">
+          <span>ПОРТФОЛИО / 2026</span>
+          <h2>Избранные работы</h2>
+        </div>
+
         <nav className="filters" aria-label="Фильтр работ по категории">
           {categories.map((item) => (
             <button
@@ -358,6 +390,25 @@ export default function Home() {
               }}
             >
               {item}
+            </button>
+          ))}
+        </nav>
+
+        <nav
+          ref={projectTabsRef}
+          className="project-tabs"
+          aria-label="Выбор проекта"
+        >
+          {visibleProjects.map((project, index) => (
+            <button
+              key={project.name}
+              ref={index === activeIndex ? activeProjectTabRef : null}
+              type="button"
+              aria-pressed={index === activeIndex}
+              className={index === activeIndex ? "project-tab active" : "project-tab"}
+              onClick={() => setSelected(index)}
+            >
+              {project.name === "МТС УЖЕ 5G" ? "МТС" : project.name}
             </button>
           ))}
         </nav>
@@ -413,6 +464,7 @@ export default function Home() {
                   className="card-face"
                   style={{ backgroundColor: project.color }}
                 >
+                  <span className="cover-category">{project.category}</span>
                   <span className="cover-title">
                     {project.name === "МТС УЖЕ 5G" ? "МТС" : project.name}
                   </span>

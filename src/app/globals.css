@@ -246,6 +246,11 @@ a:focus-visible {
   padding-top: 7px;
 }
 
+.mobile-portfolio-heading,
+.project-tabs {
+  display: none;
+}
+
 .filter {
   padding: 0 0 5px;
   border: 0;
@@ -365,6 +370,7 @@ a:focus-visible {
 }
 
 .cover-category {
+  display: none;
   position: absolute;
   top: 8%;
   left: 6%;
@@ -539,7 +545,7 @@ a:focus-visible {
 
 @media (max-width: 760px) {
   :root {
-    --card-width: min(78vw, 360px);
+    --card-width: min(82vw, 420px);
   }
 
   .showreel-section {
@@ -587,12 +593,12 @@ a:focus-visible {
     position: relative;
     inset: auto;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 5;
     flex: 0 0 auto;
   }
 
   .showreel-video {
-    object-fit: contain;
+    object-fit: cover;
   }
 
   .showreel-frame::after {
@@ -617,48 +623,185 @@ a:focus-visible {
     transform: none;
   }
 
+  .portfolio {
+    display: flex;
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 58px 0 28px;
+    background: var(--background);
+  }
+
+  .mobile-portfolio-heading {
+    display: block;
+    padding: 0 20px 22px;
+  }
+
+  .mobile-portfolio-heading > span {
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1.7px;
+  }
+
+  .mobile-portfolio-heading h2 {
+    margin: 9px 0 0;
+    font-size: clamp(28px, 8vw, 36px);
+    font-weight: 500;
+    letter-spacing: -1.8px;
+    line-height: 1;
+  }
+
   .portfolio > .filters {
-    top: 58px;
-    gap: 8px 14px;
-    max-width: calc(100% - 28px);
+    position: static;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: none;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 20px;
+    scrollbar-width: none;
+    transform: none;
+  }
+
+  .portfolio > .filters::-webkit-scrollbar,
+  .project-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .filter {
-    min-height: 44px;
-    padding: 7px 0 5px;
-    font-size: 12px;
+    min-height: 38px;
+    flex: 0 0 auto;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 999px;
+    background: #e5e5df;
+    color: var(--foreground);
+    font-size: 11px;
     touch-action: manipulation;
   }
 
-  .filters {
-    gap: 8px 14px;
+  .filter:hover,
+  .filter.active {
+    background: var(--foreground);
+    color: var(--background);
   }
 
-  .portfolio {
-    height: min(590px, 69svh);
-    min-height: 420px;
+  .filter.active {
+    border-bottom-color: transparent;
+  }
+
+  .project-tabs {
+    display: flex;
+    gap: 9px;
+    overflow-x: auto;
+    padding: 22px 20px 8px;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+  }
+
+  .project-tab {
+    min-height: 42px;
+    flex: 0 0 auto;
+    padding: 0 14px;
+    border: 1px solid #d7d7d1;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--foreground);
+    font-size: 11px;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .project-tab.active {
+    border-color: #171717;
+    background: #171717;
+    color: #f4f4f1;
+  }
+
+  .gallery {
+    position: relative;
+    inset: auto;
+    height: auto;
+    margin: 14px 18px 0;
+    border-radius: 4px 4px 0 0;
+    background: #171820;
   }
 
   .cards-origin {
-    left: 50%;
-    top: 53%;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1.03;
+    perspective: none;
+  }
+
+  .project-card {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    margin: 0;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .project-card:not(.is-active) {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .card-face {
+    border-radius: 4px 4px 0 0;
+  }
+
+  .cover-category {
+    display: block;
+    top: 8%;
+    left: 7%;
+    font-size: 9px;
+    letter-spacing: 1.5px;
   }
 
   .cover-title {
-    font-size: clamp(30px, 9vw, 42px);
-    letter-spacing: -1.5px;
+    top: 37%;
+    left: 7%;
+    max-width: 86%;
+    font-size: clamp(38px, 11vw, 52px);
+    letter-spacing: -2px;
   }
 
   .cover-subtitle {
+    left: 7%;
+    top: 62%;
     font-size: clamp(14px, 4vw, 18px);
     letter-spacing: 3px;
   }
 
+  .cover-bottom {
+    right: 7%;
+    bottom: 7%;
+    left: 7%;
+    font-size: 8px;
+    letter-spacing: 0.8px;
+  }
+
+  .cover-circle {
+    width: 78%;
+    right: -18%;
+    top: -34%;
+  }
+
   .site-footer {
-    left: max(18px, env(safe-area-inset-left));
-    right: max(18px, env(safe-area-inset-right));
-    bottom: max(16px, env(safe-area-inset-bottom));
-    gap: 12px;
+    position: static;
+    margin: 0 18px;
+    padding: 12px 14px 14px;
+    border-radius: 0 0 4px 4px;
+    background: #171820;
+    color: #f4f4f1;
   }
 
   .project-counter {
@@ -672,6 +815,8 @@ a:focus-visible {
   .gallery-controls button {
     width: 44px;
     height: 44px;
+    border-color: rgb(244 244 241 / 55%);
+    color: #f4f4f1;
   }
 
   .browse-hint {
@@ -682,15 +827,21 @@ a:focus-visible {
     min-height: 0;
     grid-template-columns: 1fr;
     gap: 12px;
+    background: rgb(23 23 23 / 92%);
     padding:
-      18px
+      26px
       max(20px, env(safe-area-inset-right))
       max(14px, env(safe-area-inset-bottom))
       max(20px, env(safe-area-inset-left));
   }
 
   .contact-footer-email {
-    font-size: 21px;
+    width: fit-content;
+    padding: 13px 15px;
+    background: transparent;
+    color: #f4f4f1;
+    font-size: 17px;
+    letter-spacing: -0.4px;
   }
 
   .contact-footer-details {
